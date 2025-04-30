@@ -1,0 +1,10 @@
+name: HomeBot Cover
+url: https://github.com/kiermasp/home_assistant_cover
+maintainer: kiermasp
+description: Home Assistant integration for Homebot Cover
+version: 0.1.0
+domain: homebot_cover
+documentation: https://github.com/kiermasp/home_assistant_cover
+issue_tracker: https://github.com/kiermasp/home_assistant_cover/issues
+codeowners:
+  - kiermasp

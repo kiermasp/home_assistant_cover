@@ -1,0 +1,110 @@
+# Example configuration.yaml entry for the custom cover component
+
+# Basic configuration with required motor switches
+cover:
+  - platform: custom_cover
+    name: "Living Room Window Cover"
+    motor_up_entity_id: switch.living_room_cover_up
+    motor_down_entity_id: switch.living_room_cover_down
+    motor_up_delay: 30  # seconds
+    motor_down_delay: 30  # seconds
+
+# Configuration with optional device class
+cover:
+  - platform: custom_cover
+    name: "Bedroom Window Cover"
+    motor_up_entity_id: switch.bedroom_cover_up
+    motor_down_entity_id: switch.bedroom_cover_down
+    motor_up_delay: 25  # seconds
+    motor_down_delay: 25  # seconds
+    device_class: window  # Optional: awning, blind, curtain, damper, door, garage, gate, shade, shutter, window
+
+# Multiple covers configuration
+cover:
+  # Living Room Cover
+  - platform: custom_cover
+    name: "Living Room Window Cover"
+    motor_up_entity_id: switch.living_room_cover_up
+    motor_down_entity_id: switch.living_room_cover_down
+    motor_up_delay: 30
+    motor_down_delay: 30
+    device_class: window
+
+  # Kitchen Cover
+  - platform: custom_cover
+    name: "Kitchen Window Cover"
+    motor_up_entity_id: switch.kitchen_cover_up
+    motor_down_entity_id: switch.kitchen_cover_down
+    motor_up_delay: 20
+    motor_down_delay: 20
+    device_class: blind
+
+  # Garage Door
+  - platform: custom_cover
+    name: "Garage Door"
+    motor_up_entity_id: switch.garage_door_up
+    motor_down_entity_id: switch.garage_door_down
+    motor_up_delay: 15
+    motor_down_delay: 15
+    device_class: garage
+
+# Example of how to use the cover in automations
+automation:
+  # Open cover at sunrise
+  - alias: "Open Living Room Cover at Sunrise"
+    trigger:
+      platform: sun
+      event: sunrise
+    action:
+      - service: cover.open_cover
+        target:
+          entity_id: cover.living_room_window_cover
+
+  # Close cover at sunset
+  - alias: "Close Living Room Cover at Sunset"
+    trigger:
+      platform: sun
+      event: sunset
+    action:
+      - service: cover.close_cover
+        target:
+          entity_id: cover.living_room_window_cover
+
+  # Stop cover if both motors are active (safety automation)
+  - alias: "Stop Cover if Both Motors Active"
+    trigger:
+      - platform: state
+        entity_id: switch.living_room_cover_up
+        to: "on"
+      - platform: state
+        entity_id: switch.living_room_cover_down
+        to: "on"
+    condition:
+      - condition: state
+        entity_id: switch.living_room_cover_up
+        state: "on"
+      - condition: state
+        entity_id: switch.living_room_cover_down
+        state: "on"
+    action:
+      - service: cover.stop_cover
+        target:
+          entity_id: cover.living_room_window_cover
+
+# Example of how to use the cover in scripts
+script:
+  # Toggle cover position
+  toggle_living_room_cover:
+    sequence:
+      - service: cover.toggle
+        target:
+          entity_id: cover.living_room_window_cover
+
+  # Set cover to specific position
+  set_living_room_cover_position:
+    sequence:
+      - service: cover.set_cover_position
+        target:
+          entity_id: cover.living_room_window_cover
+        data:
+          position: 75  # 75% open 
